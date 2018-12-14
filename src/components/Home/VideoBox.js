@@ -1,6 +1,6 @@
 import React from 'react';
 import Box from '../base/Box';
-
+//......
 const VideoBox = () => (
   <Box>
     <div className="home-box__header">
