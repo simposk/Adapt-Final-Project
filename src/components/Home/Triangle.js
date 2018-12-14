@@ -3,9 +3,9 @@ import React, { Component, PropTypes } from 'react';
 import { Motion, spring } from 'react-motion';
 
 export default class Triangle extends Component {
-  static propTypes = {
-    hover: PropTypes.bool
-  };
+//   static propTypes = {
+//     hover: PropTypes.bool
+//   };
 
   render() {
     const { hover, ...others } = this.props;
