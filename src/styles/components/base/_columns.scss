@@ -1,0 +1,22 @@
+$_gap: calc(5px * -1);
+
+.columns {
+  padding: 0;
+
+  &__row {
+    display: flex;
+    flex-flow: row wrap;
+    margin: 0 $_gap;
+    padding: 0;
+  }
+
+  &__column {
+    padding-left: 5px;
+    padding-right: 5px;
+
+    &--fill {
+      display: flex;
+      width: 100%;
+    }
+  }
+}

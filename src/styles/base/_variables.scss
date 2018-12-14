@@ -1,0 +1,54 @@
+// Main variables like widths, heights, sizes, timings, settings
+$base-line-height: 1.5;
+$base-font-size: 16px;
+$max-content-width: 1480px;
+$ultra-small-padding: 5px;
+$small-padding: 10px;
+$medium-padding: 20px;
+$large-padding: 40px;
+$ultra-small-margin: 5px;
+$small-margin: 10px;
+$medium-margin: 20px;
+$large-margin: 40px;
+
+$html-font-size: 20px;
+$html-line-height: 1.5;
+$font-size: 1.8rem;
+$font-size-sm: 1.2rem;
+$font-size-lg: 1.9rem;
+$line-height: 1.2rem;
+
+$mobile-width: 320px;
+$tablet-width: 736px;
+
+$breakpoints: (
+  small-up: ( min-width: 650px ),
+  medium-up: ( min-width: 950px ),
+  large-up: ( min-width: 1250px ),
+  small-height: '( max-height: 800px ) and ( min-width: 950px )'
+);
+
+$border-color: $gray;
+$bg-color-light: $white;
+
+$primary-color: $san-marino;
+$secondary-color: $ultra-marino;
+
+// Unit sizes
+$unit-o: .12rem;
+$unit-h: .14rem;
+$unit-1: .2rem;
+$unit-2: .4rem;
+$unit-3: .6rem;
+$unit-4: .8rem;
+$unit-5: 1rem;
+$unit-6: 1.2rem;
+$unit-7: 1.4rem;
+$unit-8: 1.6rem;
+$unit-9: 1.8rem;
+$unit-10: 2rem;
+$unit-12: 2.4rem;
+$unit-16: 3.2rem;
+
+$border-width: $unit-h;
+$border-width-lg: $unit-h;

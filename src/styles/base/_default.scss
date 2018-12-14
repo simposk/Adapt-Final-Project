@@ -1,0 +1,23 @@
+html {
+  box-sizing: border-box;
+  font-size: 70%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: $blue-light;
+  font-size: 1.4rem;
+  margin: 0;
+  padding: 0;
+}
+
+h2,
+h3 {
+  margin-bottom: $small-margin;
+  margin-top: $small-margin;
+}

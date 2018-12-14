@@ -1,0 +1,26 @@
+// Vendors.
+@import 'vendors/normalize';
+// Base.
+@import 'base/colors';
+@import 'base/variables';
+@import 'base/mixins';
+@import 'base/helpers';
+@import 'base/default';
+@import 'base/links';
+// Utilities.
+@import 'utilities/spacing';
+@import 'utilities/divider';
+@import 'utilities/text';
+// Base components.
+
+@import 'components/base/columns';
+@import 'components/base/box';
+// Components.
+@import 'components/app';
+@import 'components/nav';
+// Pages.
+@import 'components/home';
+@import 'components/dashboard1';
+@import 'components/dashboard2';
+@import 'components/dashboard3';
+@import 'components/layouts';

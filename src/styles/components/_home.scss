@@ -1,0 +1,40 @@
+.home {
+  &__wireframe-img {
+    height: 200px;
+    width: 100%;
+  }
+
+  &-box {
+    &__header {
+      align-items: center;
+      display: flex;
+      flex-flow: row nowrap;
+
+      & > h3 {
+        display: inline;
+        @extend %text--overflow;
+      }
+
+      &--right-link {
+        @extend %right-link;
+        @extend %text--overflow;
+        padding-left: $small-padding;
+      }
+    }
+
+    &__video-container {
+      position: relative;
+      overflow: hidden;
+      padding-top: 56.25%;
+
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+    }
+  }
+}

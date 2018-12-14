@@ -1,0 +1,14 @@
+.dashboard2 {
+  &__wireframe-img {
+    height: 200px;
+    width: 100%;
+  }
+
+  &__section {
+    display: flex;
+
+    &--left-link {
+      @extend %left-link;
+    }
+  }
+}

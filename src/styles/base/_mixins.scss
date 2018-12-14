@@ -1,0 +1,24 @@
+@mixin box-shadow($darken: 5%) {
+  box-shadow: 0 0 20px 0 darken($body-bg, $darken);
+}
+
+@mixin clearfix {
+  &::after {
+    clear: both;
+    content: '';
+    display: table;
+  }
+}
+
+@mixin mobile {
+  @media  only screen and (min-width: #{$mobile-width}) and (max-width: #{$tablet-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}

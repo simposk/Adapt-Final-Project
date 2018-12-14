@@ -1,0 +1,20 @@
+.app {
+  margin: 0 auto;
+  max-width: $max-content-width;
+  padding: 0 $small-padding;
+
+  @include respond-to(medium-up) {
+    padding: 0 $large-padding;
+  }
+
+  .main {
+    display: block;
+    margin-bottom: $small-margin;
+    margin-top: $small-margin;
+
+    @include respond-to(small-up) {
+      margin-top: $medium-margin;
+    }
+  }
+}
+

@@ -1,0 +1,47 @@
+.padding {
+  &--large {
+    padding: $large-padding;
+  }
+
+  &--small-bottom {
+    padding-bottom: $small-padding;
+  }
+
+  &--small-top {
+    padding-top: $small-padding;
+  }
+
+  &--small-right {
+    padding-right: $small-padding;
+  }
+
+  &--small-left {
+    padding-left: $small-padding;
+  }
+
+  &--small {
+    padding: $small-padding;
+  }
+}
+
+.margin {
+  &--small-bottom {
+    padding-bottom: $small-margin;
+  }
+
+  &--small-top {
+    padding-top: $small-margin;
+  }
+
+  &--small-right {
+    margin-right: $small-margin;
+  }
+
+  &--small-left {
+    margin-left: $small-margin;
+  }
+
+  &--small {
+    margin: $small-margin;
+  }
+}

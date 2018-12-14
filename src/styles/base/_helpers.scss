@@ -1,0 +1,58 @@
+/// Mixin to manage responsive breakpoints
+/// @author Hugo Giraudel
+/// @param {String} $layout - Breakpoint name
+/// @require $breakpoints
+@mixin respond-to($layout) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $layout) {
+    // Prints a media query based on the value
+    @media #{inspect(map-get($breakpoints, $layout))} {
+      @content;
+    }
+  }
+  // If the key doesn't exist in the map
+  //sass-lint:disable no-warn
+  @else { @warn 'Unfortunately, no value could be retrieved from `#{$breakpoint}`. Available breakpoints are: #{map-keys($breakpoints)}.'; }
+  //sass-lint:enable no-warn
+}
+
+// Mixin for vertical aligning
+@mixin vertical-align($block: inline-block, $align: middle) {
+  display: $block;
+  vertical-align: $align;
+}
+
+// Mixin for removing white spaces of inline-block
+@mixin remove-whitespace($apply-to: none, $setsize: $base-font-size) {
+  @if ($apply-to == none) {
+    font-size: 0;
+  } @else if ($apply-to == all) {
+    font-size: 0;
+
+    > * {
+      font-size: $setsize;
+    }
+  } @else {
+    font-size: 0;
+
+    #{$apply-to} {
+      font-size: $setsize;
+    }
+  }
+}
+
+@mixin clearfix($extend: true) {
+  @if $extend {
+    @extend %clearfix;
+  } @else {
+    &::after {
+      clear: both;
+      content: '';
+      display: table;
+    }
+  }
+}
+
+%clearfix {
+  @include clearfix($extend: false);
+}

@@ -1,0 +1,31 @@
+.box {
+  @include box-shadow;
+  background-color: $white;
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: box-shadow 200ms ease-in-out;
+  width: 100%;
+
+  &--padding {
+    padding: $medium-padding;
+
+    @include respond-to(medium-up) {
+      padding: $large-padding;
+    }
+  }
+
+  &:hover {
+    @include box-shadow(20%);
+  }
+
+  &--no-padding {
+    padding: 0;
+  }
+
+  @include respond-to(medium-up) {
+    &--no-padding {
+      padding: 0;
+    }
+  }
+}
+
