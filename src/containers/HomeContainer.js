@@ -15,17 +15,38 @@ import SliderBox from '../components/Home/SliderBox';
 
 class HomeContainer extends Component {
   state = {
-    coins: {},
+    coins: [],
   };
 
   async componentDidMount() {
     const { data: coins } = await axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,XRP,DOGE,XLM&tsyms=USD,EUR');
-    // padaryti kad veiktu
-    const keys = Object.keys(coins);
 
-    let obj = keys.map(key => );
-    // console.log(keys);
-    // this.setState({ coins });
+    let coinsArray = [];
+
+    let obj = {
+      coin: '',
+      data: {},
+    };
+
+    for (var key in coins) {
+      let currencies = {};
+
+      if (coins.hasOwnProperty(key)) {
+
+        for (var secondKey in coins[key]) {
+          currencies[secondKey] = coins[key][secondKey];
+        }
+        obj = {
+          coin: key,
+          data: currencies,
+        };
+        coinsArray.push(obj);
+      }
+    }
+
+    console.log(coinsArray);
+
+    // console.log(coinsArray);
   };
 
   render() {
