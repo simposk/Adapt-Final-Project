@@ -23,7 +23,6 @@ class HomeContainer extends Component {
     // padaryti kad veiktu
     const keys = Object.keys(coins);
 
-    let obj = keys.map(key => );
     // console.log(keys);
     // this.setState({ coins });
   };
