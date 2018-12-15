@@ -64,35 +64,43 @@ class HomeContainer extends Component {
         this.setState({ coins: coinsArray });
         console.log('Called getData()');
 
-      // setInterval(async () => {
-      //   const { data: coins } = await axios.get(apiEndpoint);
+      setInterval(async () => {
+        const { data: raw } = await axios.get(apiEndpoint);
 
-      //   let coinsArray = [];
+        let coinsArray = [];
 
-      //   let obj = {
-      //     coin: '',
-      //     data: {},
-      //   };
+        let coins = raw['RAW'];
 
-      //   for (var key in coins) {
-      //     let currencies = {};
+        let obj = {
+          coin: '',
+          data: {},
+        };
 
-      //     if (coins.hasOwnProperty(key)) {
+        for (var key in coins) { // eis per BTC, ETH, XRP
+          let currencies = {};
+          let raw = {};
 
-      //       for (var secondKey in coins[key]) {
-      //         currencies[secondKey] = coins[key][secondKey];
-      //       }
-      //       obj = {
-      //         coin: key,
-      //         data: currencies,
-      //       };
-      //       coinsArray.push(obj);
-      //     }
-      //   }
+          if (coins.hasOwnProperty(key)) {
+            for (var secondKey in coins[key]) { // Eis per USD, EUR,
+              for (var thirdKey in coins[key][secondKey]) { // Eis per RAW data
+                raw[thirdKey] = coins[key][secondKey][thirdKey];
+                // console.log(thirdKey + " : " + coins[key][secondKey][thirdKey]);
+              }
+              // currencies[secondKey] = coins[key][secondKey];
+              currencies[secondKey] = raw;
+            }
 
-      //   this.setState({ coins: coinsArray });
-      //   console.log('Called getData()');
-      // }, 10000);
+            obj = {
+              coin: key,
+              data: currencies,
+            };
+            coinsArray.push(obj);
+          }
+        }
+
+        this.setState({ coins: coinsArray });
+        console.log('Called getData()');
+      }, 10000);
     } catch(e) {
       console.log(e);
     }
