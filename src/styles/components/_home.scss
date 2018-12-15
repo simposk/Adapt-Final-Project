@@ -86,8 +86,8 @@ $breakpoint-alpha: 480px; // adjust to your needs
           }
         }
 
-        background: #34495E;
-        color: #fff;
+        background: #fff;
+        color: #444;
         border-radius: .4em;
         overflow: hidden;
         tr {
@@ -100,7 +100,7 @@ $breakpoint-alpha: 480px; // adjust to your needs
           }
         }
         th, td:before {
-          color: #dd5;
+          color: #55afdd;
         }
       }
     }

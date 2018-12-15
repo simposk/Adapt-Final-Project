@@ -21,45 +21,84 @@ class HomeContainer extends Component {
       coins: [],
     };
 
-    this.getData = this.getData.bind(this);
+    // this.getData = this.getData.bind(this);
   }
 
-  componentDidMount() {
-    this.getData();
-    console.log('Called getData()');
-    setInterval(function() {
-      this.getData();
-    }, 2000);
-  };
+  async componentDidMount() {
+    // this.getData();
+    let apiEndpoint = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,ETH,XRP,DOGE,EOS,LTC,XLM,ETC&tsyms=USD,EUR';
+    try {
+      const { data: raw } = await axios.get(apiEndpoint);
 
-  async getData() {
-    const { data: coins } = await axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,XRP,DOGE,EOS,LTC,XLM,ETC,&tsyms=USD,EUR');
+        let coinsArray = [];
 
-    let coinsArray = [];
+        let coins = raw['RAW'];
 
-    let obj = {
-      coin: '',
-      data: {},
-    };
-
-    for (var key in coins) {
-      let currencies = {};
-
-      if (coins.hasOwnProperty(key)) {
-
-        for (var secondKey in coins[key]) {
-          currencies[secondKey] = coins[key][secondKey];
-        }
-        obj = {
-          coin: key,
-          data: currencies,
+        let obj = {
+          coin: '',
+          data: {},
         };
-        coinsArray.push(obj);
-      }
+
+        for (var key in coins) { // eis per BTC, ETH, XRP
+          let currencies = {};
+          let raw = {};
+
+          if (coins.hasOwnProperty(key)) {
+            for (var secondKey in coins[key]) { // Eis per USD, EUR,
+              for (var thirdKey in coins[key][secondKey]) { // Eis per RAW data
+                raw[thirdKey] = coins[key][secondKey][thirdKey];
+                // console.log(thirdKey + " : " + coins[key][secondKey][thirdKey]);
+              }
+              // currencies[secondKey] = coins[key][secondKey];
+              currencies[secondKey] = raw;
+            }
+
+            obj = {
+              coin: key,
+              data: currencies,
+            };
+            coinsArray.push(obj);
+          }
+        }
+
+        this.setState({ coins: coinsArray });
+        console.log('Called getData()');
+
+      // setInterval(async () => {
+      //   const { data: coins } = await axios.get(apiEndpoint);
+
+      //   let coinsArray = [];
+
+      //   let obj = {
+      //     coin: '',
+      //     data: {},
+      //   };
+
+      //   for (var key in coins) {
+      //     let currencies = {};
+
+      //     if (coins.hasOwnProperty(key)) {
+
+      //       for (var secondKey in coins[key]) {
+      //         currencies[secondKey] = coins[key][secondKey];
+      //       }
+      //       obj = {
+      //         coin: key,
+      //         data: currencies,
+      //       };
+      //       coinsArray.push(obj);
+      //     }
+      //   }
+
+      //   this.setState({ coins: coinsArray });
+      //   console.log('Called getData()');
+      // }, 10000);
+    } catch(e) {
+      console.log(e);
     }
 
-    this.setState({ coins: coinsArray });
-  }
+  console.log(this.state.coins);
+}
 
   render() {
     return (

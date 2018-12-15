@@ -8,8 +8,6 @@ class PriceBox extends Component {
 
     let { data } = this.props;
 
-    console.log(data);
-
     return (
       <Box>
         <div className="home-box__header home-box__header--right-link">
@@ -27,9 +25,10 @@ class PriceBox extends Component {
                 <th>Change</th>
               </tr>
               {data.map(item => (
-                <tr>
+                <tr key={item.coin}>
                   <td>{ item.coin }</td>
-                  <td>${ item.data.USD }</td>
+                  <td>${ item.data.USD.PRICE }</td>
+                  <td>%{ item.data.USD.CHANGEPCT24HOUR }</td>
                 </tr>
               ))}
 
