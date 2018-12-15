@@ -14,12 +14,26 @@ import HistoricalBox from '../components/Home/HistoricalBox';
 import SliderBox from '../components/Home/SliderBox';
 
 class HomeContainer extends Component {
-  state = {
-    coins: [],
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      coins: [],
+    };
+
+    this.getData = this.getData.bind(this);
+  }
+
+  componentDidMount() {
+    this.getData();
+    console.log('Called getData()');
+    setInterval(function() {
+      this.getData();
+    }, 2000);
   };
 
-  async componentDidMount() {
-    const { data: coins } = await axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,XRP,DOGE,XLM&tsyms=USD,EUR');
+  async getData() {
+    const { data: coins } = await axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,XRP,DOGE,EOS,LTC,XLM,ETC,&tsyms=USD,EUR');
 
     let coinsArray = [];
 
@@ -44,10 +58,8 @@ class HomeContainer extends Component {
       }
     }
 
-    console.log(coinsArray);
-
-    // console.log(coinsArray);
-  };
+    this.setState({ coins: coinsArray });
+  }
 
   render() {
     return (
@@ -63,7 +75,7 @@ class HomeContainer extends Component {
           options={ TWO_COLUMNS_LAYOUTS }
           fill
         >
-          <PriceBox/>
+          <PriceBox data={this.state.coins} />
 
           <HistoricalBox />
         </Columns>

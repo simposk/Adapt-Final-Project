@@ -1,3 +1,12 @@
+body {
+  font-family: Montserrat, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  color: #444;
+}
+
+$breakpoint-alpha: 480px; // adjust to your needs
+
 .home {
   &__wireframe-img {
     height: 200px;
@@ -19,6 +28,80 @@
         @extend %right-link;
         @extend %text--overflow;
         padding-left: $small-padding;
+      }
+    }
+
+    &__price-box {
+      table {
+        margin: 1em 0;
+        min-width: 300px; // adjust to your needs
+
+        tr {
+          border-top: 1px solid #ddd;
+          border-bottom: 1px solid #ddd;
+        }
+
+        th {
+          display: none;
+        }
+
+        td {
+          display: block;
+
+          &:first-child {
+            padding-top: .5em;
+          }
+          &:last-child {
+            padding-bottom: .5em;
+          }
+
+          &:before {
+            content: attr(data-th)": "; // who knew you could do this? The internet, that's who.
+            font-weight: bold;
+
+            // optional stuff to make it look nicer
+            width: 6.5em; // magic number :( adjust according to your own content
+            display: inline-block;
+            // end options
+
+            @media (min-width: $breakpoint-alpha) {
+              display: none;
+            }
+          }
+        }
+
+        th, td {
+          text-align: left;
+          @media (min-width: $breakpoint-alpha) {
+            display: table-cell;
+            padding: .25em .5em;
+
+            &:first-child {
+              padding-left: 0;
+            }
+
+            &:last-child {
+              padding-right: 0;
+            }
+          }
+        }
+
+        background: #34495E;
+        color: #fff;
+        border-radius: .4em;
+        overflow: hidden;
+        tr {
+          border-color: lighten(#34495E, 10%);
+        }
+        th, td {
+          margin: .5em 1em;
+          @media (min-width: $breakpoint-alpha) {
+            padding: 1em !important;
+          }
+        }
+        th, td:before {
+          color: #dd5;
+        }
       }
     }
 
