@@ -13,9 +13,14 @@ export default class Triangle extends Component {
     const animate = (val) => spring(val, {
       stiffness: 120,
       damping: 35
-    });
+    });    
+  
     return (
-      <Motion style={{ offset: hover ? animate(0) : animate(271) }}>
+      <Motion style={
+          {
+            offset: hover ? animate(0) : animate(271)
+          }
+        }>
         {({ offset }) =>
           <svg
             {...others} // To inherit any props

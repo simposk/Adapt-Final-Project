@@ -6,9 +6,9 @@ import Box from '../base/Box';
 class VideoBox extends Component {
   render () {
     return (
-      <Box>
+      <Box className='videoPlayer'>
         {
-        <Video videoUrl={require("../../assets/videos/BTC.mp4")}></Video>
+        <Video className='controls' videoUrl={require("../../assets/videos/BTC.mp4")}></Video>
         }
       </Box>
     )

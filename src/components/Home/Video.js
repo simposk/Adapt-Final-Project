@@ -24,12 +24,11 @@ const PlayerContainer = styled.div`
   display: inline-block;
   margin-left: auto;
   margin-right: auto;
-
 `;
 const StyledTriangle = styled(Triangle)`
   position: absolute;
   top: 50%;
-  left: 0%;
+  left: 5%;
   transform: translate(-50%, -50%);
 `;
 const StyledSquareCursor = styled(SquareCursor)`
@@ -45,8 +44,9 @@ export default class Video extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          zoom: false,
           hover: false,
+          zoom: false,
+          playing: false,
           moveDown: 0,
           cursorPosition: {
             top: 0,
@@ -55,13 +55,18 @@ export default class Video extends Component {
         };
       }
 
-    // toggleZoom = () => {
-    // const { zoom } = this.state;
-    //     this.setState({
-    //         zoom: !zoom
-    //     });
-    // };
-
+    toggleZoom = () => {
+    const { zoom } = this.state;
+        this.setState({
+            zoom: !zoom,
+        });
+    };
+    togglePlay = () => {
+      const { playing } = this.state;
+        this.setState({
+          playing: !playing,
+        })
+    }
     onMouseOver = () => {
         this.setState({
           hover: true
@@ -74,51 +79,60 @@ export default class Video extends Component {
         });
       };
 
+      onMouseMove = (e) => {
+        this.setState({
+          cursorPosition: {
+            top: e.clientY,
+            left: e.clientX
+          }
+        });
+      };
+
     render() {
         const { videoUrl } = this.props;
-        const { zoom, hover, cursorPosition, moveDown } = this.state;
+        const { playing, zoom, hover, cursorPosition, moveDown } = this.state;
         const motionStyle = zoom ? {
-            videoSize: spring(100),
+            //videoSize: spring(100),
             triangleLeft: spring(-100)
         } : {
-            videoSize: spring(70),
-            triangleLeft: spring(-50)
+            //videoSize: spring(100),
+            triangleLeft: spring(-100)
         };
+
+        //let displayType = playing ? 'none' : 'block';
 
         return (
             <Container innerRef={(elem) => this.container = elem}>
         <Motion style={{ containerTop: spring(moveDown) }}>
           {({ containerTop }) =>
-            <Container style={{
-              position: 'absolute',
-              top: containerTop
-            }}>
+            <Container>
               <Motion style={motionStyle}>
-                {({ videoSize, triangleLeft }) =>
+                {({ /*videoSize, */triangleLeft }) =>
                   <PlayerContainer
                     onMouseMove={this.onMouseMove}
                     onMouseOver={this.onMouseOver}
                     onMouseLeave={this.onMouseLeave}
-                    onClick={this.toggleZoom}
+                    onClick={this.togglePlay}
                     style={{
-                      width: `${videoSize}%`,
-                      cursor: zoom ? 'none' : 'pointer'
+                     // width: `${videoSize}%`,
+                      cursor: playing ? 'none' : 'pointer',
                       // Hide the cursor when it's zoomed.
                     }}>
-                    <StyledSquareCursor show={zoom} style={{
+                    <StyledSquareCursor show={hover ? playing : ''} style={{
                       top: cursorPosition.top,
                       left: cursorPosition.left,
-                    }}/>
-                    <StyledTriangle
+                    }}
+                    />
+                    <StyledTriangle className = { playing ? 'StyledTriangle-disappear' : 'StyledTriangle-appear'}
                       hover={hover}
                       style={{
-                        transform: `translate(${triangleLeft}%, -50%)`
+                        //display: playing ? 'none' : 'block',
+                        transform: `translate(${triangleLeft}%, -50%)`,
                       }}/>
                     <ReactPlayer
                       width={'100%'}
                       height={'auto'}
-                      playing
-                      loop
+                      playing = { playing }
                       url={videoUrl} />
                   </PlayerContainer>
                 }
