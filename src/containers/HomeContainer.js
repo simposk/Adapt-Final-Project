@@ -99,6 +99,8 @@ class HomeContainer extends Component {
 
   console.log(this.state.coins);
 }
+    // console.log(keys);
+    // this.setState({ coins });
 
   render() {
     return (
