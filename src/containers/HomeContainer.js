@@ -128,7 +128,7 @@ class HomeContainer extends Component {
 
           <HistoricalBox />
         </Columns>
-        <SliderBox />
+        <SliderBox data={ this.state.coins }/>
       </div>
     );
   }
