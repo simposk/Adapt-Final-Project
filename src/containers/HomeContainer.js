@@ -124,7 +124,7 @@ class HomeContainer extends Component {
           options={ TWO_COLUMNS_LAYOUTS }
           fill
         >
-          <PriceBox data={this.state.coins} />
+          <PriceBox data={ this.state.coins } />
 
           <HistoricalBox />
         </Columns>

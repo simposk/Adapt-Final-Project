@@ -8,6 +8,10 @@ class PriceBox extends Component {
 
     let { data } = this.props;
 
+    // console.log(data);
+    // console.log(data[0].data.USD[CHANGEPCT24HOUR]);
+    // console.log(data.data.USD.CHANGEPCT24HOUR);
+
     return (
       <Box>
         <div className="home-box__header home-box__header--right-link">
@@ -28,7 +32,7 @@ class PriceBox extends Component {
                 <tr key={item.coin}>
                   <td>{ item.coin }</td>
                   <td>${ item.data.USD.PRICE }</td>
-                  <td>%{ item.data.USD.CHANGEPCT24HOUR }</td>
+                  <td id="change" >{ item.data.USD.CHANGEPCT24HOUR.toFixed(2) }%</td>
                 </tr>
               ))}
 
