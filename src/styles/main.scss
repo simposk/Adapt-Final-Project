@@ -12,13 +12,13 @@
 @import 'utilities/divider';
 @import 'utilities/text';
 // Base components.
-
 @import 'components/base/columns';
 @import 'components/base/box';
 // Components.
 @import 'components/app';
 @import 'components/nav';
 @import 'components/video';
+@import 'components/price';
 // Pages.
 @import 'components/home';
 @import 'components/dashboard1';

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import Columns from '../components/base/Columns';
 import axios from 'axios';
 
@@ -26,7 +25,7 @@ class HomeContainer extends Component {
 
   async componentDidMount() {
     // this.getData();
-    let apiEndpoint = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,ETH,XRP,DOGE,EOS,LTC,XLM,ETC&tsyms=USD,EUR';
+    let apiEndpoint = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,XRP,ETH,USDT,XLM,EOS,LTC,DOGE,EOS,ETC,WAVES,TRX,ADA,DASH,NEO,XTZ,TUSD,USDC,BTG,VET,OMG,BAT,PAX,QTUM,ZRX,ONT,DCR,LSK,BCD,ZIL,NANO&tsyms=USD,EUR';
     try {
       const { data: raw } = await axios.get(apiEndpoint);
 
@@ -105,10 +104,8 @@ class HomeContainer extends Component {
       console.log(e);
     }
 
-  console.log(this.state.coins);
+  // console.log(this.state.coins);
 }
-    // console.log(keys);
-    // this.setState({ coins });
 
   render() {
     return (
@@ -125,7 +122,6 @@ class HomeContainer extends Component {
           fill
         >
           <PriceBox data={ this.state.coins } />
-
           <HistoricalBox />
         </Columns>
         <SliderBox />

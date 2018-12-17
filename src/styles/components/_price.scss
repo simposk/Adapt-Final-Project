@@ -1,0 +1,118 @@
+$breakpoint-alpha: 480px; // adjust to your needs
+
+.home {
+    &-box {
+        &__price-box {
+            table {
+                margin: 1em 0;
+                min-width: 300px; // adjust to your needs
+
+                .change {
+                    text-align: right;
+                }
+                .red {
+                    color: #dd5555;
+                }
+
+                .green {
+                    color: #86bf58;
+                }
+
+                .green, .red {
+                    font-weight: bold;
+                    text-align: right;
+                }
+
+                tr {
+                    border-top: 1px solid #ddd;
+                    border-bottom: 1px solid #ddd;
+                }
+
+                th {
+                    display: none;
+                }
+
+                td {
+                    display: block;
+
+                    &:first-child {
+                        padding-top: .5em;
+                    }
+                    &:last-child {
+                        padding-bottom: .5em;
+                    }
+
+                    &:before {
+                        content: attr(data-th)": "; // who knew you could do this? The internet, that's who.
+                        font-weight: bold;
+
+                    // optional stuff to make it look nicer
+                        width: 6.5em; // magic number :( adjust according to your own content
+                        display: inline-block;
+                        // end options
+
+                        @media (min-width: $breakpoint-alpha) {
+                            display: none;
+                        }
+                    }
+                }
+
+                th, td {
+                    text-align: left;
+                    @media (min-width: $breakpoint-alpha) {
+                        display: table-cell;
+                        padding: .25em .5em;
+
+                        &:first-child {
+                            padding-left: 0;
+                        }
+
+                        &:last-child {
+                            padding-right: 0;
+                        }
+                    }
+                }
+
+                background: #fff;
+                color: #444;
+                border-radius: .4em;
+                overflow: hidden;
+
+                tr {
+                    border-color: lighten(#34495E, 10%);
+                }
+                th, td {
+                    margin: .5em 1em;
+                    @media (min-width: $breakpoint-alpha) {
+                        padding: 1em !important;
+                    }
+                }
+                th, td:before {
+                    color: #55afdd;
+                }
+            }
+        }
+    }
+}
+
+.dashboard1 {
+    .table__header {
+        text-align: left;
+        color: #55afdd;
+    }
+    .change {
+        text-align: right;
+    }
+    .red {
+        color: #dd5555;
+    }
+
+    .green {
+        color: #86bf58;
+    }
+
+    .green, .red {
+        font-weight: bold;
+        text-align: right;
+    }
+}
