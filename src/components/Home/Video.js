@@ -100,8 +100,6 @@ export default class Video extends Component {
             triangleLeft: spring(-100)
         };
 
-        //let displayType = playing ? 'none' : 'block';
-
         return (
             <Container innerRef={(elem) => this.container = elem}>
         <Motion style={{ containerTop: spring(moveDown) }}>

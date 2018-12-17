@@ -13,7 +13,6 @@ class Dashboard1Box1 extends Component {
       searchQuery: '',
       searchInterval: 'histoday',
       hasSubmitted: false,
-      hasSelected: false,
       data: [],
     }
   }
@@ -23,7 +22,7 @@ class Dashboard1Box1 extends Component {
   };
 
   handleSelect = value => {
-    this.setState({ searchInterval: value, hasSubmitted: false, hasSelected: true });
+    this.setState({ searchInterval: value });
   }
 
   handleSubmit = async () => {
@@ -88,18 +87,7 @@ class Dashboard1Box1 extends Component {
   };
 
   render() {
-    const { searchQuery, searchInterval, data, hasSubmitted, hasSelected } = this.state;
-
-    let interval = searchInterval === 'histoday' ? '1 day' : (searchInterval === 'histohour' ? '3 h': '10 min');
-    let defaultinis = 'every 1 day';
-
-    if (!hasSubmitted && !hasSelected) {
-      var current = interval;
-    }
-
-    // let kebab = current;
-
-    console.log(interval);
+    const { searchQuery, searchInterval, data, hasSubmitted} = this.state;
 
     return (
       <React.Fragment>
@@ -116,21 +104,7 @@ class Dashboard1Box1 extends Component {
           <table width="100%" className="rwd-table">
             <tbody>
               <tr className="table__header">
-                {
-                  !hasSubmitted && !hasSelected &&  <th>Date ({ defaultinis })</th>
-                }
-
-                {
-                  !hasSubmitted && hasSelected &&
-                  <th>Date (every { current })</th>
-                }
-
-                {
-                  hasSubmitted &&
-                  <th>Date (every { interval })</th>
-                }
-
-
+                <th>Date</th>
                 <th>Price</th>
                 <th className="change">Change</th>
               </tr>

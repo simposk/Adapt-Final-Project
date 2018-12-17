@@ -124,7 +124,7 @@ class HomeContainer extends Component {
           <PriceBox data={ this.state.coins } />
           <HistoricalBox />
         </Columns>
-        <SliderBox />
+        <SliderBox data={ this.state.coins }/>
       </div>
     );
   }
