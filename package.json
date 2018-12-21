@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node scripts/start.js",
-    "serve": "serve -s build",
+    "st": "serve -s build",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "lint": "./node_modules/.bin/eslint ./src --fix",
