@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +15,11 @@ const Dashboard2Container = () => (
     <Columns
       options={ TWO_COLUMNS_LAYOUTS }
     >
-      <Dashboard2Box1 />
+      <Dashboard2Box1>
+
+      </Dashboard2Box1>
+      
+      
       <Dashboard2Box2 />
     </Columns>
   </div>
