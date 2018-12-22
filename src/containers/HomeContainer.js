@@ -108,6 +108,7 @@ class HomeContainer extends Component {
 }
 
   render() {
+    console.log(this.state.coins);
     return (
       <div className="home">
         <Columns

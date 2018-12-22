@@ -1,83 +1,122 @@
 /* eslint-disable */
 import React, { Component } from 'react';
-
 import Box from '../base/Box';
 import paragraphImg from '../../assets/wireframes/paragraph.png';
-import Chart from './Chart';
+// import Chart from './Chart';
+import { LineChart } from 'react-charts-d3';
+import Axios from 'axios';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import _ from 'lodash';
 
 class Dashboard2Box1 extends Component {
   constructor(){
     super();
+
+    let today = new Date();
+    const nuo = today.getFullYear() + "." + parseInt(today.getMonth() + 1) + "." +  parseInt(today.getDate() + 1);
+    let todayUnix = new Date(nuo).getTime() / 1000;
+
     this.state = {
-      chartData:{}
+      values: [],
+      startDate: new Date(),
+      endDate: new Date(),
+      unixFrom: todayUnix,
+      unixTo: todayUnix,
+    } 
+  }
+
+
+
+  getChartData = () => {
+
+  }
+
+
+  handleChange = date => {
+
+    const demo = new Date(date);
+    const nuo = demo.getFullYear() + "." + parseInt(demo.getMonth() + 1) + "." +  parseInt(demo.getDate() + 1);
+    var unixFrom = new Date(nuo).getTime() / 1000;
+
+    let { unixTo, endDate } = this.state;
+
+    if(unixFrom < unixTo) {
+        this.setState({
+            startDate: date,
+            unixFrom
+        })
+    } else {
+        this.setState({
+            startDate: endDate,
+        }) 
     }
-  }
+}
 
-  componentWillMount(){
-    this.getChartData();
-  }
+handleChange2 = date => {
+    const demo = new Date(date);
+    const nuo = demo.getFullYear() + "." + parseInt(demo.getMonth() + 1) + "." +  parseInt(demo.getDate() + 1);
+    var unixTo = new Date(nuo).getTime() / 1000;
 
-  getChartData(){
-    // Ajax calls here
-    this.setState({
-      chartData:{
-        labels: ['Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge', 'New Bedford'],
-        datasets:[
-          {
-            label:'Population',
-            data:[
-              617594,
-              181045,
-              153060,
-              106519,
-              105162,
-              95072
-            ],
-            backgroundColor:[
-              'rgba(255, 99, 132, 0.6)',
-              'rgba(54, 162, 235, 0.6)',
-              'rgba(255, 206, 86, 0.6)',
-              'rgba(75, 192, 192, 0.6)',
-              'rgba(153, 102, 255, 0.6)',
-              'rgba(255, 159, 64, 0.6)',
-              'rgba(255, 99, 132, 0.6)'
-            ]
-          }
-        ]
-      }
+    const { unixFrom, startDate } = this.state;
+
+    if (unixFrom < unixTo) {
+        this.setState({
+            endDate: date,
+            unixTo
+        })    
+    } else {
+        this.setState({
+            endDate: startDate,
+        }) 
+    }
+}
+
+handleDateSearch = async () => {
+    const { unixTo, startDate, endDate } = this.state;
+
+    var days = Math.floor(Math.abs(endDate - startDate) / 1000 / 86400);
+
+    const apiEndpoint = "https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=" + days + "&toTs=" + unixTo;
+
+    const { data } = await Axios.get(apiEndpoint);
+
+    let values = _.values(data.Data);
+
+    let lineValues = _.map(values, item => {
+        return {x: item.time, y: item.close}
     });
-  }
+
+    let arrayOfLineValueObjects = [...lineValues];
+
+    let lineChartData = {};
+    lineChartData.key = 'Group 1';
+    lineChartData.values = arrayOfLineValueObjects;
+
+    console.log(lineChartData);
+
+    this.setState({
+        values: lineChartData,
+    });
+}
 
   render() {
     return (
       <React.Fragment>
         <Box>
-          <form>
-            Line chart title:<br/>
-            <input type="text" name="Line chart title"/><br/>
-          </form><br/>
-
-          <label>
-            Select currency:<br/>
-          </label> 
-          <select>
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="opel">Opel</option>
-            <option value="audi">Audi</option>
-          </select> <br/> 
-          <label>
-          <br/>Select date FROM:<br/>
-          </label>
-          <input type="date"></input>
-          <label>
-          <br/><br/>Select date TO:<br/>
-          </label>
-          <input type="date"></input>
-          <input type ="submit" style={{float: 'right'}} value='Update'></input>
+          <DatePicker
+            selected={this.state.startDate}
+            onChange={this.handleChange}
+          />
+          <DatePicker
+            selected={this.state.endDate}
+            onChange={this.handleChange2}
+          />
+          <input type ="submit" style={{float: 'right'}} value='Update' onClick={ this.handleDateSearch }></input>
         </Box>
+        
         <Box>
-            <Chart chartData={this.state.chartData} location="Massachusetts" legendPosition="bottom"/><br/>
+            <LineChart data = {this.state.values} />
         </Box>
       </React.Fragment>
       

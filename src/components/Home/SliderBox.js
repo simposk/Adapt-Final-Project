@@ -10,7 +10,7 @@ const SliderBox = ({ data }) => (
       <h3>Slider</h3>
     </div> */}
     <div className="divider margin--small-bottom" />
-
+    
     <div>
     <Slider slides={ data }></Slider>
     </div>
