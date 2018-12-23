@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Columns from '../components/base/Columns';
 import axios from 'axios';
-
+import _ from 'lodash';
 import {
   TWO_COLUMNS_60_40_LAYOUT,
   TWO_COLUMNS_LAYOUTS,
@@ -19,12 +19,17 @@ class HomeContainer extends Component {
     var apiTimeout;
 
     this.state = {
+      values: [],
+      drawChart: false,
       coins: [],
       apiTimeout,
     };
 
     // this.getData = this.getData.bind(this);
   }
+
+
+
 
   getDataFromApi = async () => {
     let apiEndpoint = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,XRP,ETH,USDT,XLM,EOS,LTC,DOGE,EOS,ETC,WAVES,TRX,ADA,DASH,NEO,XTZ,TUSD,USDC,BTG,VET,OMG,BAT,PAX,QTUM,ZRX,ONT,DCR,LSK,BCD,ZIL,NANO&tsyms=USD,EUR';
@@ -70,8 +75,27 @@ class HomeContainer extends Component {
         return coinsArray;
   }
 
+  getDataForChart = async () => {
+    const apiEndpoint = 'https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=6';
+
+    const { data } = await axios.get(apiEndpoint);
+
+    let values = _.values(data.Data);
+
+    let lineValues = _.map(values, item => {
+      let date = new Date(item.time * 1000).toISOString().substring(0, 10);
+      return { x: date, y: item.close };
+    });
+    //console.log(lineValues);
+    this.setState({
+        values: [lineValues],
+        drawChart: true,
+      });
+  }
+
   async componentDidMount() {
       await this.getDataFromApi();
+      await this.getDataForChart();
       let apiTimeout = setTimeout(this.getDataFromApi, 10000);
       this.setState({ apiTimeout });
   }
@@ -82,6 +106,7 @@ class HomeContainer extends Component {
   }
 
   render() {
+    const { values } = this.state;
     return (
       <div className="home">
         <Columns
@@ -96,7 +121,7 @@ class HomeContainer extends Component {
           fill
         >
           <PriceBox data={ this.state.coins } />
-          <HistoricalBox />
+          <HistoricalBox data={ values }/>
         </Columns>
         <SliderBox data={ this.state.coins }/>
       </div>
