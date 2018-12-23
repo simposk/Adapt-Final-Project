@@ -13,6 +13,8 @@ class Dashboard2Box1 extends Component {
   constructor() {
     super();
 
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() -1);
     let today = Date.now();
     // const nuo =
     //   today.getFullYear() +
@@ -24,11 +26,12 @@ class Dashboard2Box1 extends Component {
 
     this.state = {
       values: [],
-      startDate: new Date(),
+      startDate: yesterday,
       endDate: new Date(),
-      unixFrom: today,
+      unixFrom: yesterday,
       unixTo: today,
       today: today,
+      yesterday: yesterday,
     };
   }
 
@@ -45,24 +48,14 @@ class Dashboard2Box1 extends Component {
     var unixFrom = new Date(nuo).getTime() / 1000;
 
     let { unixTo, endDate } = this.state;
-
-    if (unixFrom > this.state.today) {
+    
+    if (date < endDate){
       this.setState({
-        startDate: this.state.today,
-        unixFrom: this.state.today,
+        unixFrom,
+        startDate: date,
       })
     }
-    else if (unixFrom < unixTo) {
-      this.setState({
-        startDate: date,
-        unixFrom
-      });
-    }
-    else {
-      this.setState({
-        startDate: endDate
-      });
-    }
+
   };
 
   handleChange2 = date => {
@@ -75,25 +68,13 @@ class Dashboard2Box1 extends Component {
       parseInt(demo.getDate() + 1);
     var unixTo = new Date(nuo).getTime() / 1000;
 
-    const { unixFrom, startDate } = this.state;
-
-    if (unixFrom < unixTo) {
+    const { endDate, unixFrom, startDate } = this.state;
+    
+    if (date > startDate){
       this.setState({
-        endDate: this.state.today,
-        unixTo: this.state.today
-      })
-    } 
-    else if (unixTo > this.state.today)
-    {
-      this.setState({
+        unixTo,
         endDate: date,
-        unixTo
-      });
-    }
-    else {
-      this.setState({
-        endDate: startDate
-      });
+      })
     }
   };
 
@@ -129,7 +110,7 @@ class Dashboard2Box1 extends Component {
     let lineValues = _.map(values, item => {
       let date = new Date(item.time * 1000).toISOString().substring(0, 10);
       //WARNING! To be deprecated in React v17. Use componentDidMount instead.
-      console.log(date);
+      //console.log(date);
       return { x: date, y: item.close };
     });
 
@@ -172,17 +153,22 @@ class Dashboard2Box1 extends Component {
   }
 
   render() {
-    console.log(this.state.values);
+    //console.log(this.state.values);
     return (
       <React.Fragment>
         <Box>
           <DatePicker
             selected={this.state.startDate}
             onChange={this.handleChange}
+            minDate={[new Date(), 5]}
+            maxDate={this.state.yesterday}
+            showDisabledMonthNavigation
           />
           <DatePicker
             selected={this.state.endDate}
             onChange={this.handleChange2}
+            minDate={[new Date(), 5]}
+            maxDate={new Date()}
           />
           <input
             type="submit"
