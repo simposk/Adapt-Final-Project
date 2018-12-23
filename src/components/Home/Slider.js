@@ -55,7 +55,7 @@ export default class CitiesSlider extends React.Component {
                 <div className="slider__slide-content">
                   <h3 className="slider__slide-subheading">${slide.data.USD.PRICE}</h3>
                   <h2 className="slider__slide-heading">
-                    { slide.coin.split('').map(l => <span>{l}</span>) }
+                    { slide.coin.split('').map(l => <span key={ Math.random() }>{l}</span>) }
                   </h2>
                   <p className="slider__slide-readmore">read more</p>
                 </div>

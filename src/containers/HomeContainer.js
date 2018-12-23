@@ -16,8 +16,11 @@ class HomeContainer extends Component {
   constructor(props) {
     super(props);
 
+    var apiTimeout;
+
     this.state = {
       coins: [],
+      apiTimeout,
     };
 
     // this.getData = this.getData.bind(this);
@@ -62,20 +65,23 @@ class HomeContainer extends Component {
         // console.log('Called getData()');
         this.setState({ coins: coinsArray });
 
+        setTimeout(this.getDataFromApi, 10000);
+
         return coinsArray;
   }
 
   async componentDidMount() {
-      let data = await this.getDataFromApi();
-      let apiCall = setInterval(this.getDataFromApi(), 10000); // Pakeisti setTimeout vietoj setInterval
+      await this.getDataFromApi();
+      let apiTimeout = setTimeout(this.getDataFromApi, 10000);
+      this.setState({ apiTimeout });
   }
 
   componentWillUnmount() {
    // clearInterval(apiCall);
+   clearTimeout(this.state.apiTimeout);
   }
 
   render() {
-    console.log(this.state.coins);
     return (
       <div className="home">
         <Columns
