@@ -99,6 +99,10 @@ $breakpoint-alpha: 480px; // adjust to your needs
     .table__header {
         text-align: left;
         color: #55afdd;
+
+        th {
+            padding-bottom: 15px;
+        }
     }
     .change {
         text-align: right;
@@ -114,5 +118,9 @@ $breakpoint-alpha: 480px; // adjust to your needs
     .green, .red {
         font-weight: bold;
         text-align: right;
+    }
+
+    td {
+        border-bottom: 1.5px solid $blue;
     }
 }

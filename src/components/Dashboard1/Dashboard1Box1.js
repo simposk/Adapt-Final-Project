@@ -4,7 +4,7 @@ import Box from '../base/Box';
 import axios from 'axios';
 import SearchBox from './../base/SearchBox';
 import Select from './../base/Select';
-
+import Table from './../base/Table';
 class Dashboard1Box1 extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +12,6 @@ class Dashboard1Box1 extends Component {
     this.state = {
       searchQuery: '',
       searchInterval: 'histoday',
-      hasSubmitted: false,
       data: [],
     }
   }
@@ -21,23 +20,36 @@ class Dashboard1Box1 extends Component {
     this.setState({ searchQuery: query });
   };
 
+  getChangesPct = data => {
+    let dataWithPriceChange = data.map(item => {
+      let decrease = item.open - item.close;
+      item["changePct"] = (-1 * decrease / item.open * 100) + "0";
+
+      return item;
+    });
+
+    return dataWithPriceChange;
+  }
+
   handleSelect = value => {
     this.setState({ searchInterval: value });
   }
 
-  handleSubmit = async () => {
+  getDataFromApi = async () => {
     const limit = 24;
 
-    // Group by how many
     const aggregate = this.state.searchInterval === 'histoday' ? '1' : (this.state.searchInterval === 'histohour' ? '3' : '10');
+
     const apiEndpoint = 'https://min-api.cryptocompare.com/data/'+ this.state.searchInterval +'?fsym=' + this.state.searchQuery + '&tsym=USD&limit=' + limit + '&aggregate=' + aggregate;
+
     const { data } = await axios.get(apiEndpoint);
 
-    const dataOfDays = data.Data;
+    return data;
+  }
 
-    for (let i = 0; i < dataOfDays.length; i++) {
-      // Pr01ice data
-      let time = dataOfDays[i].time;
+  getFormatedDates = data => {
+    let dataWithDates = data.Data.map(item => {
+      let time = item.time;
       let date = new Date(time * 1000).toISOString().substring(0, 10);
       var hours = new Date(time * 1000).getHours();
       var minutes = new Date(time * 1000).getMinutes();
@@ -45,27 +57,33 @@ class Dashboard1Box1 extends Component {
       if (minutes < 10) minutes = "0" + minutes;
 
       if (this.state.searchInterval === 'histoday') {
-        dataOfDays[i]["date"] = date;
+        item["date"] = date;
       } else if (this.state.searchInterval === 'histohour') {
-        dataOfDays[i]["date"] = date + ' ' + hours + ':00';
+        item["date"] = date + ' ' + hours + ':00';
       } else if (this.state.searchInterval === 'histominute') {
-        dataOfDays[i]["date"] = date + ' ' + hours + ':' + minutes;
+        item["date"] = date + ' ' + hours + ':' + minutes;
       }
 
-      // Price change in percentage
-      let decrease = dataOfDays[i].open - dataOfDays[i].close;
-      dataOfDays[i]["changePct"] = (-1 * decrease / dataOfDays[i].open * 100) + "0";
-    }
+      return item;
+    });
 
-    let sorted = dataOfDays.sort((a, b) => {
+    return dataWithDates;
+  }
+
+  handleSubmit = async () => {
+    let data = await this.getDataFromApi();
+    data = this.getFormatedDates(data);
+    data = this.getChangesPct(data);
+
+    data = data.sort((a, b) => {
       return new Date(b.date) - new Date(a.date);
     });
 
-    this.setState({ data: sorted, hasSubmitted: true, hasSelected: false })
+    this.setState({ data, hasSelected: false })
   };
 
   render() {
-    const { searchQuery, searchInterval, data, hasSubmitted} = this.state;
+    const { searchQuery, searchInterval, data } = this.state;
 
     return (
       <React.Fragment>
@@ -79,23 +97,7 @@ class Dashboard1Box1 extends Component {
         </Box>
 
         <Box>
-          <table width="100%" className="rwd-table">
-            <tbody>
-              <tr className="table__header">
-                <th>Date</th>
-                <th>Price</th>
-                <th className="change">Change</th>
-              </tr>
-              {data.length > 0 && data.map(item => (
-                <tr key={item.time}>
-                  <td>{item.date}</td>
-                  <td>${item.close}</td>
-                  <td className={item.changePct[0] === '-' ? 'red' : 'green'} >{ item.changePct[0] === '-' ? item.changePct.substring(0, 5) : item.changePct.substring(0, 4) }%</td>
-                </tr>
-              ))}
-
-            </tbody>
-          </table>
+          <Table data={ data } />
         </Box>
       </React.Fragment>
     );
