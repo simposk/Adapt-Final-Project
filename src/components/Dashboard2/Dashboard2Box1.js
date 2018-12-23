@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import Box from "../base/Box";
-import { LineChart } from "react-easy-chart";
+import { LineChart, BarChart } from "react-easy-chart";
 import Axios from "axios";
 import _ from "lodash";
 import SearchBox from './../base/SearchBox';
@@ -30,6 +30,7 @@ class Dashboard2Box1 extends Component {
       today: today,
       yesterday: yesterday,
       drawChart: false,
+      drawVolume: false,
       windowWidth: initialWidth - 100,
     };
   }
@@ -109,9 +110,16 @@ class Dashboard2Box1 extends Component {
         return { x: date, y: item.close };
       });
 
+      let volume = _.map(values, item => {
+        let date = new Date(item.time * 1000).toISOString().substring(0, 10);
+        return { x: date, y: item.volumeto };
+      });
+
       this.setState({
         values: [lineValues],
+        volume: volume,
         drawChart: true,
+        drawVolume: true,
         currency: searchQuery,
       });
     }
@@ -122,7 +130,9 @@ class Dashboard2Box1 extends Component {
   };
 
   render() {
-    const { startDate, endDate, yesterday, values, windowWidth, searchQuery, currency } = this.state;
+    const { startDate, endDate, yesterday, values, windowWidth, searchQuery, currency, volume, drawChart, drawVolume } = this.state;
+
+    console.log(JSON.stringify(volume));
 
     return (
       <React.Fragment>
@@ -158,9 +168,7 @@ class Dashboard2Box1 extends Component {
             onClick={ this.handleChartSubmit }
           />
         </Box>
-
-
-        { this.state.drawChart &&
+        { drawChart &&
           <Box>
             <div className="chart__container">
               <LineChart
@@ -177,6 +185,20 @@ class Dashboard2Box1 extends Component {
               />
             </div>
           </Box>
+        }
+
+        { drawVolume &&
+          <div className="volume__container">
+            <Box>
+              <BarChart
+                data={ volume }
+                height={ 140 }
+                width={ 500 }
+                axes
+                margin={{top: 0, right: 0, bottom: 40, left: 100}}
+              />
+            </Box>
+          </div>
         }
       </React.Fragment>
     );

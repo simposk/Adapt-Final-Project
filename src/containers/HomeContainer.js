@@ -71,9 +71,9 @@ class HomeContainer extends Component {
   }
 
   async componentDidMount() {
-      await this.getDataFromApi();
-      let apiTimeout = setTimeout(this.getDataFromApi, 10000);
-      this.setState({ apiTimeout });
+    await this.getDataFromApi();
+    let apiTimeout = setTimeout(this.getDataFromApi, 10000);
+    this.setState({ apiTimeout });
   }
 
   componentWillUnmount() {
