@@ -17,7 +17,7 @@ class Dashboard2Box1 extends Component {
     yesterday.setDate(yesterday.getDate() -1);
     let today = Date.now();
 
-    const initialWidth = window.innerWidth > 0 ? 1000 : 600;
+    const initialWidth = window.innerWidth > 0 ? 949 : 600;
 
     this.state = {
       values: [],
