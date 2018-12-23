@@ -105,7 +105,11 @@ class HomeContainer extends Component {
     }
 
   // console.log(this.state.coins);
-}
+  }
+
+  componentWillUnmount() {
+
+  }
 
   render() {
     console.log(this.state.coins);
