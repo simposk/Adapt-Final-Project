@@ -12,27 +12,32 @@ body {
   }
 
   &-box {
-    &__header {
-      align-items: center;
-      display: flex;
-      flex-flow: row nowrap;
+      &__header {
+        align-items: center;
+        display: flex;
+        flex-flow: row nowrap;
 
-      & > h3 {
-        display: inline;
-        @extend %text--overflow;
+        & > h3 {
+          display: inline;
+          @extend %text--overflow;
+        }
+
+        &--right-link {
+          @extend %right-link;
+          @extend %text--overflow;
+          padding-left: $small-padding;
       }
 
-      &--right-link {
-        @extend %right-link;
-        @extend %text--overflow;
-        padding-left: $small-padding;
+      &__video-container {
+        position: relative;
+        overflow: hidden;
+        padding-top: 56.25%;
       }
     }
 
-    &__video-container {
-      position: relative;
-      overflow: hidden;
-      padding-top: 56.25%;
+      g.x.axis text {
+      transform: rotate(-90deg) translate(-30px,-18px);
+
     }
   }
 }
