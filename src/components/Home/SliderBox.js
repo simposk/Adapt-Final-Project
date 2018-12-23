@@ -6,15 +6,12 @@ import Box from '../base/Box';
 const SliderBox = ({ data }) => (
 
   <Box>
-    {/* <div className="home-box__header">
-      <h3>Slider</h3>
-    </div> */}
     <div className="divider margin--small-bottom" />
-    
+
     <div>
     <Slider slides={ data }></Slider>
     </div>
-    
+
   </Box>
 );
 

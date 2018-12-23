@@ -1,3 +1,4 @@
+
 .dashboard2 {
   &__wireframe-img {
     height: 200px;
@@ -13,7 +14,37 @@
   }
 
   g.x.axis text {
-    transform: rotate(-90deg) translate(-30px,-15px);
+    transform: rotate(-90deg) translate(-30px,-18px);
   }
 
+  // Date picker
+  .datePicker {
+    &__container {
+
+    }
+
+    &__wrapper {
+    }
+  }
+
+  .button-submit {
+    float: right;
+    background: $button;
+    color: white;
+    border: 1px solid $button;
+    padding: 10px 15px;
+    border-radius: 3px;
+    transition: background 1s;
+
+    &:hover {
+      background: darken($button, 15);
+      cursor: pointer;
+      transition: background 1s;
+    }
+  }
+
+  .chart__container {
+    text-align: center
+  }
 }
+

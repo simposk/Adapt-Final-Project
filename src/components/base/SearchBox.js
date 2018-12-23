@@ -1,14 +1,19 @@
 /*eslint-disable*/
 import React from "react";
 
-const SearchBox = ({ value, onChange }) => {
+const SearchBox = ({ value, onChange, placeholder, label }) => {
   return (
     <React.Fragment>
-      <label>Search for a coin:</label> <br />
+      { label &&
+        <div>
+          <label>{ label }</label> <br />
+        </div>
+      }
+
       <input
         type="text"
         name="query"
-        placeholder="BTC,ETH,XRP..."
+        placeholder={ placeholder }
         value={value}
         onChange={e => onChange(e.currentTarget.value)}
       />

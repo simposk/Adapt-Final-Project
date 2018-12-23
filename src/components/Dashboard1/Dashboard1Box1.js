@@ -83,7 +83,6 @@ class Dashboard1Box1 extends Component {
     }
 
     this.setState({ data: sortedData, hasSubmitted: true, hasSelected: false })
-    // console.log(this.state.data);
   };
 
   render() {
@@ -95,7 +94,7 @@ class Dashboard1Box1 extends Component {
           <div className="form">
             <Select value={ searchInterval } onChange={ this.handleSelect } />
             <br />
-            <SearchBox value={searchQuery} onChange={ this.handleSearch } />
+            <SearchBox value={ searchQuery } onChange={ this.handleSearch } label="Search for a coin:" />
             <button onClick={ this.handleSubmit }>Search</button>
           </div>
         </Box>
