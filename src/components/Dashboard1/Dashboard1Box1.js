@@ -26,9 +26,11 @@ class Dashboard1Box1 extends Component {
   }
 
   handleSubmit = async () => {
-    const dataSize = this.state.searchInterval === 'histoday' ? '60' : (this.state.searchInterval === 'histohour' ? '180' : '600');
-    console.log(dataSize);
-    const apiEndpoint = 'https://min-api.cryptocompare.com/data/'+ this.state.searchInterval +'?fsym=' + this.state.searchQuery + '&tsym=USD&limit=' + dataSize;
+    const limit = 24;
+
+    // Group by how many
+    const aggregate = this.state.searchInterval === 'histoday' ? '1' : (this.state.searchInterval === 'histohour' ? '3' : '10');
+    const apiEndpoint = 'https://min-api.cryptocompare.com/data/'+ this.state.searchInterval +'?fsym=' + this.state.searchQuery + '&tsym=USD&limit=' + limit + '&aggregate=' + aggregate;
     const { data } = await axios.get(apiEndpoint);
 
     const dataOfDays = data.Data;
@@ -53,36 +55,13 @@ class Dashboard1Box1 extends Component {
       // Price change in percentage
       let decrease = dataOfDays[i].open - dataOfDays[i].close;
       dataOfDays[i]["changePct"] = (-1 * decrease / dataOfDays[i].open * 100) + "0";
-      // console.log(dataOfDays[i].changePct[0]);
     }
 
-    let sorted = dataOfDays;
-
-    // sort array by date so newest will be on top
-    sorted = sorted.sort((a, b) => {
+    let sorted = dataOfDays.sort((a, b) => {
       return new Date(b.date) - new Date(a.date);
     });
 
-    // Add data accordingly to searchInterval
-    let sortedData = [];
-
-    if (this.state.searchInterval === 'histohour') {
-      let ii = 0;
-      for (let i = 0; i < sorted.length; i += 3) {
-        sortedData[ii] = sorted[i];
-        ii++;
-      }
-    } else if (this.state.searchInterval === 'histominute') {
-      let ii = 0;
-      for (let i = 0; i < sorted.length; i += 10) {
-        sortedData[ii] = sorted[i];
-        ii++;
-      }
-    } else {
-      sortedData = sorted;
-    }
-
-    this.setState({ data: sortedData, hasSubmitted: true, hasSelected: false })
+    this.setState({ data: sorted, hasSubmitted: true, hasSelected: false })
   };
 
   render() {
