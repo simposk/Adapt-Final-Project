@@ -14,7 +14,7 @@ const HistoricalBox = ( { data } ) => (
 
     <div className="divider margin--small-bottom" />
    <div className="chart__container">
-   <div classname="home-box_currency"> BTC </div>
+   <div className="home-box_currency"> BTC </div>
       <LineChart
         className="chart__container--chart"
         xType={ 'text' }
