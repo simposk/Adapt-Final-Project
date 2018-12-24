@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import paragraphImg from '../../assets/wireframes/paragraph.png';
 import { LineChart } from 'react-easy-chart';
 import Box from '../base/Box';
 

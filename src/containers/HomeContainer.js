@@ -24,55 +24,50 @@ class HomeContainer extends Component {
       coins: [],
       apiTimeout,
     };
-
-    // this.getData = this.getData.bind(this);
   }
-
-
-
 
   getDataFromApi = async () => {
     let apiEndpoint = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,XRP,ETH,USDT,XLM,EOS,LTC,DOGE,EOS,ETC,WAVES,TRX,ADA,DASH,NEO,XTZ,TUSD,USDC,BTG,VET,OMG,BAT,PAX,QTUM,ZRX,ONT,DCR,LSK,BCD,ZIL,NANO&tsyms=USD,EUR';
 
     const { data: raw } = await axios.get(apiEndpoint);
 
-        let coinsArray = [];
+    let coinsArray = [];
 
-        let coins = raw['RAW'];
+    let coins = raw['RAW'];
 
-        let obj = {
-          coin: '',
-          data: {},
-        };
+    let obj = {
+      coin: '',
+      data: {},
+    };
 
-        for (var key in coins) { // eis per BTC, ETH, XRP
-          let currencies = {};
-          let raw = {};
+    for (var key in coins) { // eis per BTC, ETH, XRP
+      let currencies = {};
+      let raw = {};
 
-          if (coins.hasOwnProperty(key)) {
-            for (var secondKey in coins[key]) { // Eis per USD, EUR,
-              for (var thirdKey in coins[key][secondKey]) { // Eis per RAW data
-                raw[thirdKey] = coins[key][secondKey][thirdKey];
-                // console.log(thirdKey + " : " + coins[key][secondKey][thirdKey]);
-              }
-              // currencies[secondKey] = coins[key][secondKey];
-              currencies[secondKey] = raw;
-            }
-
-            obj = {
-              coin: key,
-              data: currencies,
-            };
-            coinsArray.push(obj);
+      if (coins.hasOwnProperty(key)) {
+        for (var secondKey in coins[key]) { // Eis per USD, EUR,
+          for (var thirdKey in coins[key][secondKey]) { // Eis per RAW data
+            raw[thirdKey] = coins[key][secondKey][thirdKey];
+            // console.log(thirdKey + " : " + coins[key][secondKey][thirdKey]);
           }
+
+          currencies[secondKey] = raw;
         }
-        // this.setState({ coins: coinsArray });
-        // console.log('Called getData()');
-        this.setState({ coins: coinsArray });
 
-        setTimeout(this.getDataFromApi, 10000);
+        obj = {
+          coin: key,
+          data: currencies,
+        };
+        coinsArray.push(obj);
+      }
+    }
 
-        return coinsArray;
+    console.log(coinsArray);
+    this.setState({ coins: coinsArray });
+
+    setTimeout(this.getDataFromApi, 10000);
+
+    return coinsArray;
   }
 
   getDataForChart = async () => {
@@ -94,10 +89,10 @@ class HomeContainer extends Component {
   }
 
   async componentDidMount() {
-      await this.getDataFromApi();
-      await this.getDataForChart();
-      let apiTimeout = setTimeout(this.getDataFromApi, 10000);
-      this.setState({ apiTimeout });
+    await this.getDataFromApi();
+    await this.getDataForChart();
+    let apiTimeout = setTimeout(this.getDataFromApi, 10000);
+    this.setState({ apiTimeout });
   }
 
   componentWillUnmount() {
