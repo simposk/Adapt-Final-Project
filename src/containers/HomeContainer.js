@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Columns from '../components/base/Columns';
 import axios from 'axios';
 import _ from 'lodash';
+
 import {
   TWO_COLUMNS_60_40_LAYOUT,
   TWO_COLUMNS_LAYOUTS,
@@ -12,12 +13,11 @@ import PriceBox from '../components/Home/PriceBox';
 import HistoricalBox from '../components/Home/HistoricalBox';
 import SliderBox from '../components/Home/SliderBox';
 
-var apiTimeout;
-
 class HomeContainer extends Component {
-
   constructor(props) {
     super(props);
+
+    this._isMounted = false;
 
     this.state = {
       values: [],
@@ -27,18 +27,23 @@ class HomeContainer extends Component {
   }
 
   getDataFromApi = async () => {
-    let apiEndpoint = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,XRP,ETH,USDT,XLM,EOS,LTC,DOGE,EOS,ETC,WAVES,TRX,ADA,DASH,NEO,XTZ,TUSD,USDC,BTG,VET,OMG,BAT,PAX,QTUM,ZRX,ONT,DCR,LSK,BCD,ZIL,NANO&tsyms=USD,EUR';
+    if (this._isMounted) {
+      let apiEndpoint = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,XRP,ETH,USDT,XLM,EOS,LTC,DOGE,EOS,ETC,WAVES,TRX,ADA,DASH,NEO,XTZ,TUSD,USDC,BTG,VET,OMG,BAT,PAX,QTUM,ZRX,ONT,DCR,LSK,BCD,ZIL,NANO&tsyms=USD,EUR';
 
-    const { data: raw } = await axios.get(apiEndpoint);
+      const { data: raw } = await axios.get(apiEndpoint);
 
-    let coins = raw['RAW'];
+      let coins = raw['RAW'];
 
-    let coinsArray = this.formatData(coins);
+      let coinsArray = this.formatData(coins);
 
-    this.setState({ coins: coinsArray });
-    setTimeout(this.getDataFromApi, 10000);
-    console.log('called!');
-    return coinsArray;
+      this.setState({ coins: coinsArray });
+
+      setTimeout(this.getDataFromApi, 10000);
+
+      console.log('called!');
+
+      return coinsArray;
+    }
   }
 
   formatData = coins => {
@@ -86,13 +91,13 @@ class HomeContainer extends Component {
   }
 
   async componentDidMount() {
+    this._isMounted = true;
     await this.getDataFromApi();
     await this.getChartData();
-    apiTimeout = setTimeout(this.getDataFromApi, 10000);
   }
 
   componentWillUnmount() {
-    clearTimeout(apiTimeout);
+    this._isMounted = false;
   }
 
   render() {
