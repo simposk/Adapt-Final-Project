@@ -12,17 +12,17 @@ import PriceBox from '../components/Home/PriceBox';
 import HistoricalBox from '../components/Home/HistoricalBox';
 import SliderBox from '../components/Home/SliderBox';
 
+var apiTimeout;
+
 class HomeContainer extends Component {
+
   constructor(props) {
     super(props);
-
-    var apiTimeout;
 
     this.state = {
       values: [],
       drawChart: false,
       coins: [],
-      apiTimeout,
     };
   }
 
@@ -31,14 +31,18 @@ class HomeContainer extends Component {
 
     const { data: raw } = await axios.get(apiEndpoint);
 
-    let coinsArray = [];
-
     let coins = raw['RAW'];
 
-    let obj = {
-      coin: '',
-      data: {},
-    };
+    let coinsArray = this.formatData(coins);
+
+    this.setState({ coins: coinsArray });
+    setTimeout(this.getDataFromApi, 10000);
+    console.log('called!');
+    return coinsArray;
+  }
+
+  formatData = coins => {
+    let coinsArray = [];
 
     for (var key in coins) { // eis per BTC, ETH, XRP
       let currencies = {};
@@ -48,13 +52,11 @@ class HomeContainer extends Component {
         for (var secondKey in coins[key]) { // Eis per USD, EUR,
           for (var thirdKey in coins[key][secondKey]) { // Eis per RAW data
             raw[thirdKey] = coins[key][secondKey][thirdKey];
-            // console.log(thirdKey + " : " + coins[key][secondKey][thirdKey]);
           }
-
           currencies[secondKey] = raw;
         }
 
-        obj = {
+        let obj = {
           coin: key,
           data: currencies,
         };
@@ -62,15 +64,10 @@ class HomeContainer extends Component {
       }
     }
 
-    console.log(coinsArray);
-    this.setState({ coins: coinsArray });
-
-    setTimeout(this.getDataFromApi, 10000);
-
     return coinsArray;
-  }
+  };
 
-  getDataForChart = async () => {
+  getChartData = async () => {
     const apiEndpoint = 'https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=6';
 
     const { data } = await axios.get(apiEndpoint);
@@ -81,23 +78,21 @@ class HomeContainer extends Component {
       let date = new Date(item.time * 1000).toISOString().substring(0, 10);
       return { x: date, y: item.close };
     });
-    //console.log(lineValues);
+
     this.setState({
-        values: [lineValues],
-        drawChart: true,
-      });
+      values: [lineValues],
+      drawChart: true,
+    });
   }
 
   async componentDidMount() {
     await this.getDataFromApi();
-    await this.getDataForChart();
-    let apiTimeout = setTimeout(this.getDataFromApi, 10000);
-    this.setState({ apiTimeout });
+    await this.getChartData();
+    apiTimeout = setTimeout(this.getDataFromApi, 10000);
   }
 
   componentWillUnmount() {
-   // clearInterval(apiCall);
-   clearTimeout(this.state.apiTimeout);
+    clearTimeout(apiTimeout);
   }
 
   render() {
