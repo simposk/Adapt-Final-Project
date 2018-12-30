@@ -16,13 +16,14 @@ class Dashboard1Box1 extends Component {
       data: [],
       coins: [], // for select input
       limit: 24,
+      clicked: false,
     }
   }
 
   getChangesPct = data => {
     let dataWithPriceChange = data.map(item => {
       let decrease = item.open - item.close;
-      item["changePct"] = (-1 * decrease / item.open * 100) + "0";
+      item["changePct"] = (-1 * decrease / item.open * 100) + '';
 
       return item;
     });
@@ -97,8 +98,6 @@ class Dashboard1Box1 extends Component {
       options.push(obj);
     });
 
-    // console.log(options);
-
     this.setState({ coins: options });
   }
 
@@ -118,25 +117,34 @@ class Dashboard1Box1 extends Component {
     });
 
     this.setState({ selectedOption, data });
+
+    console.log('clicked');
+  }
+
+  handleClick = () => {
+    let isClicked = !this.state.clicked;
+    this.setState({ clicked: isClicked })
   }
 
   render() {
-    const { searchInterval, data, selectedOption, coins } = this.state;
+    const { searchInterval, data, selectedOption, coins, clicked } = this.state;
 
     return (
       <React.Fragment>
-        <Box className="select-currency">
+        <Box className={ clicked ? 'select-currency' : '' }>
           <div className="form">
             <Select2 value={ searchInterval } onChange={ this.handleSelectInterval } />
             <br />
             <br />
 
             <label>Select a coin:</label>
-            <Select
-              value={ selectedOption }
-              onChange={ this.handleSelectCoin }
-              options={ coins }
-            />
+            <div className="select-wrapper" onClick={ this.handleClick }>
+              <Select
+                value={ selectedOption }
+                onChange={ this.handleSelectCoin }
+                options={ coins }
+              />
+            </div>
 
           </div>
         </Box>

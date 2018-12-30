@@ -28,7 +28,7 @@ class PriceBox extends Component {
                 <tr key={item.coin}>
                   <td>{item.coin}</td>
                   <td>${item.data.USD.PRICE}</td>
-                  <td className={item.data.USD.CHANGEPCT24HOUR.toFixed(2)[0] === '-' ? 'red' : 'green'} >{item.data.USD.CHANGEPCT24HOUR.toFixed(2)}%</td>
+                  <td className={item.data.USD.CHANGEPCT24HOUR.toFixed(2)[0] === '-' ? 'red' : 'green'} >{ item.data.USD.CHANGEPCT24HOUR.toFixed(2)[0] === '-' ? `${item.data.USD.CHANGEPCT24HOUR.toFixed(2)}% ▼` : `${item.data.USD.CHANGEPCT24HOUR.toFixed(2)}% ▲` }</td>
                 </tr>
               ))}
 
