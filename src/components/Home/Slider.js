@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 
 export default class CitiesSlider extends React.Component {
     constructor(props) {
@@ -57,7 +58,9 @@ export default class CitiesSlider extends React.Component {
                   <h2 className="slider__slide-heading">
                     { slide.coin.split('').map(l => <span key={ Math.random() }>{l}</span>) }
                   </h2>
+                  <Link to="dashboard2">
                   <p className="slider__slide-readmore">read more</p>
+                  </Link>
                 </div>
                 <div className="slider__slide-parts">
                   {}

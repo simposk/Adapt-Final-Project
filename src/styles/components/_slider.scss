@@ -166,7 +166,10 @@
           }
         }
       }
-
+      a {
+        text-decoration: none;
+      }
+      
       &-readmore {
         position: relative;
         font-size: 14px;
@@ -174,7 +177,7 @@
         backface-visibility: hidden;
         transform: translateY(-20px);
         cursor: pointer;
-
+        color: white;
         @include subTextsActiveSlide;
 
         &:before {
