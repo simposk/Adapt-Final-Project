@@ -16,5 +16,21 @@
       margin-top: $medium-margin;
     }
   }
+
+  .button-submit {
+    float: right;
+    background: $button;
+    color: white;
+    border: 1px solid $button;
+    padding: 10px 15px;
+    border-radius: 3px;
+    transition: background 1s;
+
+    &:hover {
+      background: darken($button, 15);
+      cursor: pointer;
+      transition: background 1s;
+    }
+  }
 }
 

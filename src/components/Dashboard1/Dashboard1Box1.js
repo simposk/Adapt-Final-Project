@@ -92,7 +92,14 @@ class Dashboard1Box1 extends Component {
             <Select value={ searchInterval } onChange={ this.handleSelect } />
             <br />
             <SearchBox value={ searchQuery } onChange={ this.handleSearch } label="Search for a coin:" />
-            <button onClick={ this.handleSubmit }>Search</button>
+
+            <input
+              type="submit"
+              value="Search"
+              className="button-submit"
+              onClick={ this.handleSubmit }
+            />
+
           </div>
         </Box>
 
