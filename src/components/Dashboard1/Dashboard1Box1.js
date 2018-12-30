@@ -2,23 +2,22 @@
 import React, { Component } from 'react';
 import Box from '../base/Box';
 import axios from 'axios';
-import SearchBox from './../base/SearchBox';
-import Select from './../base/Select';
+import Select2 from './../base/Select';
 import Table from './../base/Table';
+import Select from 'react-select';
+
 class Dashboard1Box1 extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      searchQuery: '',
+      selectedOption: null,
       searchInterval: 'histoday',
       data: [],
+      coins: [], // for select input
+      limit: 24,
     }
   }
-
-  handleSearch = query => {
-    this.setState({ searchQuery: query });
-  };
 
   getChangesPct = data => {
     let dataWithPriceChange = data.map(item => {
@@ -31,23 +30,29 @@ class Dashboard1Box1 extends Component {
     return dataWithPriceChange;
   }
 
-  handleSelect = value => {
-    this.setState({ searchInterval: value });
+  handleSelectInterval = async value => {
+    if (this.state.selectedOption != null) {
+      const aggregate = value === 'histoday' ? '1' : (value === 'histohour' ? '3' : '10');
+
+      const apiEndpoint = 'https://min-api.cryptocompare.com/data/'+ value +'?fsym=' + this.state.selectedOption.label + '&tsym=USD&limit=' + this.state.limit + '&aggregate=' + aggregate;
+
+      let { data } = await axios.get(apiEndpoint);
+
+      data = this.getFormatedDates(data, value);
+
+      console.log(data);
+
+      data = this.getChangesPct(data);
+
+      data = data.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+
+      this.setState({ data, searchInterval: value });
+    }
   }
 
-  getDataFromApi = async () => {
-    const limit = 24;
-
-    const aggregate = this.state.searchInterval === 'histoday' ? '1' : (this.state.searchInterval === 'histohour' ? '3' : '10');
-
-    const apiEndpoint = 'https://min-api.cryptocompare.com/data/'+ this.state.searchInterval +'?fsym=' + this.state.searchQuery + '&tsym=USD&limit=' + limit + '&aggregate=' + aggregate;
-
-    const { data } = await axios.get(apiEndpoint);
-
-    return data;
-  }
-
-  getFormatedDates = data => {
+  getFormatedDates = (data, value='') => {
     let dataWithDates = data.Data.map(item => {
       let time = item.time;
       let date = new Date(time * 1000).toISOString().substring(0, 10);
@@ -56,12 +61,22 @@ class Dashboard1Box1 extends Component {
 
       if (minutes < 10) minutes = "0" + minutes;
 
-      if (this.state.searchInterval === 'histoday') {
-        item["date"] = date;
-      } else if (this.state.searchInterval === 'histohour') {
-        item["date"] = date + ' ' + hours + ':00';
-      } else if (this.state.searchInterval === 'histominute') {
-        item["date"] = date + ' ' + hours + ':' + minutes;
+      if (value != '') {
+        if (value === 'histoday') {
+          item["date"] = date;
+        } else if (value === 'histohour') {
+          item["date"] = date + ' ' + hours + ':00';
+        } else if (value === 'histominute') {
+          item["date"] = date + ' ' + hours + ':' + minutes;
+        }
+      } else {
+        if (this.state.searchInterval === 'histoday') {
+          item["date"] = date;
+        } else if (this.state.searchInterval === 'histohour') {
+          item["date"] = date + ' ' + hours + ':00';
+        } else if (this.state.searchInterval === 'histominute') {
+          item["date"] = date + ' ' + hours + ':' + minutes;
+        }
       }
 
       return item;
@@ -70,8 +85,31 @@ class Dashboard1Box1 extends Component {
     return dataWithDates;
   }
 
-  handleSubmit = async () => {
-    let data = await this.getDataFromApi();
+  componentDidMount() {
+   let coins = ['BTC','ETH','EOS','XRP','LTC','BCH','ZEC','ETC','DASH','NEO','TRX','XLM','SNT','QTUM','USDT','ADA','PAX','HT','OMG','TUSD','GNT','BNB','TRUE','BSV','PIVX','MCO','WAVES','ONT','ZIL','OKB','XMR','HC','HSR','PAY','IOT','DOGE','TCH','ZRX','BTS','STRAT','TIX','MGO','IOST','NULS','VET','GTO','APIS','WTC','XEM','USDC','OCN','MITH','BAT','ICX','XAS','ABT','ARN','MER','KMD','NAS','LINK','QKC','SRN','CTXC','XVG','MDA','SYS','SWFTC','SC','BTG','REP','DCR','PRO','SALT','ETF','RDN','ENG','R','LSK','MTL','DENT','GTC','VIB','MANA','DGD','THETA','UTK','KNC','IOTX','AUTO','POWR','GRS'];
+
+    let options = [];
+
+    coins.forEach(item => {
+      let obj = {};
+      obj.label = item;
+      obj.value = item;
+      options.push(obj);
+    });
+
+    // console.log(options);
+
+    this.setState({ coins: options });
+  }
+
+  handleSelectCoin = async selectedOption => {
+
+    const aggregate = this.state.searchInterval === 'histoday' ? '1' : (this.state.searchInterval === 'histohour' ? '3' : '10');
+
+    const apiEndpoint = 'https://min-api.cryptocompare.com/data/'+ this.state.searchInterval +'?fsym=' + selectedOption.label + '&tsym=USD&limit=' + this.state.limit + '&aggregate=' + aggregate;
+
+    let { data } = await axios.get(apiEndpoint);
+
     data = this.getFormatedDates(data);
     data = this.getChangesPct(data);
 
@@ -79,25 +117,25 @@ class Dashboard1Box1 extends Component {
       return new Date(b.date) - new Date(a.date);
     });
 
-    this.setState({ data, hasSelected: false })
-  };
+    this.setState({ selectedOption, data });
+  }
 
   render() {
-    const { searchQuery, searchInterval, data } = this.state;
+    const { searchInterval, data, selectedOption, coins } = this.state;
 
     return (
       <React.Fragment>
-        <Box>
+        <Box className="select-currency">
           <div className="form">
-            <Select value={ searchInterval } onChange={ this.handleSelect } />
+            <Select2 value={ searchInterval } onChange={ this.handleSelectInterval } />
             <br />
-            <SearchBox value={ searchQuery } onChange={ this.handleSearch } label="Search for a coin:" />
+            <br />
 
-            <input
-              type="submit"
-              value="Search"
-              className="button-submit"
-              onClick={ this.handleSubmit }
+            <label>Select a coin:</label>
+            <Select
+              value={ selectedOption }
+              onChange={ this.handleSelectCoin }
+              options={ coins }
             />
 
           </div>

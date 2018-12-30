@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React from "react";
 
-const Select = ({ value, onChange }) => {
+const Select2 = ({ value, onChange }) => {
   return (
     <React.Fragment>
         <label>Data interval:</label> <br />
@@ -14,4 +14,4 @@ const Select = ({ value, onChange }) => {
   );
 };
 
-export default Select;
+export default Select2;
